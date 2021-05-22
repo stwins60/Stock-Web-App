@@ -2,8 +2,10 @@ import json
 
 import requests
 import streamlit as st
+import yfinance as yf
+import FinNews as fn
 import config
-
+from datetime import date
 
 def main():
     st.title('STOCK APP')
@@ -19,44 +21,31 @@ def main():
 
         if st.button('Search'):
 
-            url = f"https://option-chain.p.rapidapi.com/straddle/{sym}"
-
-            headers = {
-                'x-rapidapi-key': config.API_KEY,
-                'x-rapidapi-host': "option-chain.p.rapidapi.com"
-            }
-
-            response = requests.request("GET", url, headers=headers)
-            data = response.text
-            stock_data = json.loads(data)
-            for i in stock_data:
-                dt = stock_data['stock']
-                print(dt)
-                # st.text(dt)
-
-            st.image(dt['logo_url'])
-            st.text('NAME: ' + dt['longName'])
-            st.text('WEBSITE: ' + dt['website'])
-            # st.markdown('BUSINESS SUMMARY: ' + dt['longBusinessSummary'])
-            st.text('Sector: ' + dt['sector'])
-            st.text('Quote Type: ' + dt['quoteType'])
-            st.text('INDUSTRY: ' + dt['industry'])
-            st.text('CURRENCY: ' + dt['currency'])
-            st.text('ANNUAL DIVIDEND YIELD: ' + str(dt['trailingAnnualDividendYield']))
-            st.text('MARKET OPEN: ' + str(dt['regularMarketOpen']))
-            st.text('Quote Type: ' + dt['quoteType'])
-            st.text('INDUSTRY: ' + dt['industry'])
-            st.text('PREVIOUS CLOSE: ' + str(dt['previousClose']))
-            st.text('HIGH: ' + str(dt['regularMarketDayHigh']))
-            st.text('OPEN: ' + str(dt['open']))
-            st.text('REGULAR MARKET PRICE: ' + str(dt['regularMarketPrice']))
-            st.text('DIVIDEND RATE: ' + str(dt['dividendRate']))
-            st.text('MARKET VOLUME: ' + str(dt['regularMarketVolume']))
-            st.text('BID SIZE: ' + str(dt['bidSize']))
-            st.text('BID: ' + str(dt['bid']))
-            st.text('VOLUME: ' + str(dt['volume']))
-            st.text('AVERAGE VOLUME: ' + str(dt['averageVolume']))
-            st.text('LAST UPDATE: ' + str(dt['lastUpdated']))
+            data = yf.Ticker(sym)
+            datalist = data.get_info()
+            st.image(datalist['logo_url'])
+            st.text('NAME: ' + datalist['longName'])
+            st.text('WEBSITE: ' + datalist['website'])
+                # st.markdown('BUSINESS SUMMARY: ' + dt['longBusinessSummary'])
+            st.text('Sector: ' + datalist['sector'])
+            st.text('Quote Type: ' + datalist['quoteType'])
+            st.text('INDUSTRY: ' + datalist['industry'])
+            st.text('CURRENCY: ' + datalist['currency'])
+            st.text('ANNUAL DIVIDEND YIELD: ' + str(datalist['trailingAnnualDividendYield']))
+            st.text('MARKET OPEN: ' + str(datalist['regularMarketOpen']))
+            st.text('Quote Type: ' + datalist['quoteType'])
+            st.text('INDUSTRY: ' + datalist['industry'])
+            st.text('PREVIOUS CLOSE: ' + str(datalist['previousClose']))
+            st.text('HIGH: ' + str(datalist['regularMarketDayHigh']))
+            st.text('OPEN: ' + str(datalist['open']))
+            st.text('REGULAR MARKET PRICE: ' + str(datalist['regularMarketPrice']))
+            st.text('DIVIDEND RATE: ' + str(datalist['dividendRate']))
+            st.text('MARKET VOLUME: ' + str(datalist['regularMarketVolume']))
+            st.text('BID SIZE: ' + str(datalist['bidSize']))
+            st.text('BID: ' + str(datalist['bid']))
+            st.text('VOLUME: ' + str(datalist['volume']))
+            st.text('AVERAGE VOLUME: ' + str(datalist['averageVolume']))
+            st.text('LAST UPDATE: ' + str(date.today()))
 
     elif choice == 'Cypto Exchange':
         st.subheader('Welcome to Cypto Exchange rate')
@@ -89,6 +78,7 @@ def main():
             st.text('ASK PRICE: ' + str(dt['9. Ask Price']))
             st.text('BID PRICE: ' + str(dt['8. Bid Price']))
             st.text('LAST REFRESHED: ' + str(dt['6. Last Refreshed']))
+
 
 if __name__ == '__main__':
     main()
