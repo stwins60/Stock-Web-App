@@ -3,7 +3,6 @@ import json
 import requests
 import streamlit as st
 import yfinance as yf
-import FinNews as fn
 import config
 from datetime import date
 
